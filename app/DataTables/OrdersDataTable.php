@@ -83,7 +83,14 @@ class OrdersDataTable extends DataTable
     {
         $query = $model->newQuery();
 
-        // إضافة تصفية التواريخ
+        // فلترة حسب الحالة
+        $status = request()->get('status', 'غير منجز'); // القيمة الافتراضية "غير منجز"
+
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        // فلترة التواريخ
         if (request()->has('start_date') && request()->has('end_date')) {
             $startDate = request()->get('start_date');
             $endDate = request()->get('end_date');
@@ -109,13 +116,14 @@ class OrdersDataTable extends DataTable
             ->columns($this->getColumns())
             ->minifiedAjax('', null, [
                 'start_date' => 'function() { return document.getElementById("start_date").value; }',
-                'end_date' => 'function() { return document.getElementById("end_date").value; }'
+                'end_date' => 'function() { return document.getElementById("end_date").value; }',
+                'status' => 'function() { return document.getElementById("status_filter").value; }'
             ])
-            ->dom('rt' . "<'row'<'col-sm-12'tr>><'d-flex justify-content-between'<'col-sm-12 col-md-5'i><'d-flex justify-content-between'p>>")
+            ->dom('rt<"row"<"col-sm-12"tr>><"d-flex justify-content-between"<"col-sm-12 col-md-5"i><"d-flex justify-content-between"p>>')
             ->addTableClass('table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer text-gray-600 fw-semibold')
             ->setTableHeadClass('text-start text-muted fw-bold fs-7 text-uppercase gs-0')
-            ->orderBy(4) // Ordering by created_at column
-            ->drawCallback("function() {" . file_get_contents(resource_path('views/pages/apps/orders/columns/_draw-scripts.js')) . "}")
+            ->orderBy(4)
+            ->drawCallback('function() {' . file_get_contents(resource_path('views/pages/apps/orders/columns/_draw-scripts.js')) . '}')
             ->parameters([
                 'language' => [
                     'url' => asset('js/datatables/ar.json')

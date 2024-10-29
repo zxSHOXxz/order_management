@@ -42,24 +42,38 @@
             <!--begin::Card title-->
             <div class="card-title">
                 <!--begin::Search-->
-                <div class="d-flex align-items-center position-relative my-1">
-                    {!! getIcon('magnifier', 'fs-3 position-absolute ms-5') !!}
-                    <input type="text" data-kt-order-table-filter="search"
-                        class="form-control form-control-solid w-250px ps-13" placeholder="بحث عن طلب"
-                        id="mySearchInput" />
+                <div class="row g-3">
+                    <div class="col-12 col-md-3">
+                        <div class="position-relative">
+                            {!! getIcon('magnifier', 'fs-3 position-absolute top-50 start-0 translate-middle-y ms-4') !!}
+                            <input type="text" data-kt-order-table-filter="search"
+                                class="form-control form-control-solid ps-13" placeholder="بحث عن طلب"
+                                id="mySearchInput" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <input type="date" id="start_date" class="form-control form-control-solid"
+                            placeholder="من تاريخ">
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <input type="date" id="end_date" class="form-control form-control-solid"
+                            placeholder="إلى تاريخ">
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <select id="status_filter" class="form-select form-select-solid">
+                            <option value="غير منجز">غير منجز</option>
+                            <option value="مكتمل">مكتمل</option>
+                            <option value="all">جميع الطلبات</option>
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <button id="filterDates" class="btn btn-primary w-100">تصفية</button>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <button id="resetDates" class="btn btn-secondary w-100">إعادة تعيين</button>
+                    </div>
                 </div>
                 <!--end::Search-->
-
-                <!--begin::Date filters-->
-                <div class="d-flex align-items-center mx-3">
-                    <input type="date" id="start_date" class="form-control form-control-solid me-2"
-                        placeholder="من تاريخ">
-                    <input type="date" id="end_date" class="form-control form-control-solid"
-                        placeholder="إلى تاريخ">
-                    <button id="filterDates" class="btn btn-primary ms-2">تصفية</button>
-                    <button id="resetDates" class="btn btn-secondary ms-2 w-100">إعادة تعيين</button>
-                </div>
-                <!--end::Date filters-->
             </div>
             <!--begin::Card title-->
 
@@ -204,6 +218,9 @@
                 document.getElementById('start_date').value = '';
                 document.getElementById('end_date').value = '';
                 window.LaravelDataTables['orders-table'].ajax.reload(null, false);
+            });
+            document.getElementById('status_filter').addEventListener('change', function() {
+                window.LaravelDataTables['orders-table'].ajax.reload();
             });
         </script>
     @endpush
