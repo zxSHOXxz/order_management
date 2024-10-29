@@ -53,8 +53,16 @@
                             </div>
 
                             <label class="fw-semibold fs-6 mb-2">إضافة مرفقات جديدة</label>
-                            <input type="file" wire:model="attachments" name="attachments[]"
-                                class="form-control form-control-solid" multiple>
+                            <div class="position-relative">
+                                <input type="file" wire:model="attachments" name="attachments[]"
+                                    class="form-control form-control-solid" multiple
+                                    wire:loading.attr="disabled">
+                                <div wire:loading wire:target="attachments" class="position-absolute top-50 end-0 translate-middle-y me-3">
+                                    <span class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">جاري التحميل...</span>
+                                    </span>
+                                </div>
+                            </div>
                             <div class="temporary-files-preview mt-3">
                                 <!-- سيتم ملؤها بواسطة JavaScript -->
                             </div>

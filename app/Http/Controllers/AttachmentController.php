@@ -12,8 +12,8 @@ class AttachmentController extends Controller
 {
     public function download(Attachment $attachment)
     {
-        $disk = Storage::disk('public'); // أو أي قرص آخر تستخدمه
-
+        $disk = Storage::disk('public');
+        
         if (!$disk->exists($attachment->file_path)) {
             return response()->json(['error' => 'File not found'], 404);
         }
